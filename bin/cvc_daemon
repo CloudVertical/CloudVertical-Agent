@@ -8,7 +8,7 @@ require 'highline/import'
 require 'daemons'
 require 'cv_client/provider/aws/auth'
 
-CvClient::Provider::Aws::Auth.new.ask_for_and_save_credentialsoptions = {
+options = {
   :app_name   => "cvc-daemon",
   :dir_mode   => :normal,
   :dir        => '/tmp/',
