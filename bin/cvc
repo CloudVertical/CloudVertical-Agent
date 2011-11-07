@@ -8,6 +8,7 @@ require 'cv_client'
 require 'highline/import'
 require 'cv_client/provider/cv/auth'
 require 'cv_client/provider/aws/auth'
+require 'yaml'
 
 options = {}
 OptionParser.new do |opts|
