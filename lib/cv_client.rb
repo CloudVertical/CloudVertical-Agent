@@ -1,1 +1,1 @@
-require 'cv_client/auth/aws'
+require 'cv_client/provider/aws/auth'
