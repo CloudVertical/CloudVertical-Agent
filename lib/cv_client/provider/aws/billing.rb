@@ -24,12 +24,13 @@ module CvClient
         
         def get_content
           agent = self.init_agent()
-          return agent.page.content
+          @content = agent.page.content
+          return @content
         end
         
-        def send(content)
+        def send
           @connection = CvClient::Core::Connection.new
-          @connection.post({:data => {:vendor => VENDOR, :type => TYPE, :content => content}})
+          @connection.post({:data => {:vendor => VENDOR, :type => TYPE, :content => @content}})
         end
 
       end
