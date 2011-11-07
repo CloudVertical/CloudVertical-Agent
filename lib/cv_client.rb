@@ -1,1 +1,1 @@
-require 'cv_client/command'
+require 'cv_client/auth/aws'

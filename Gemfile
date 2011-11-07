@@ -4,5 +4,6 @@ gemspec
 
 group :development do
 	gem "highline"
+	gem "amqp"
 end
 
