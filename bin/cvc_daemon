@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+scripts = File.expand_path(File.dirname(__FILE__) + '/../scripts')
 lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
 $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 
@@ -8,7 +9,7 @@ require 'highline/import'
 require 'daemons'
 require 'cv_client/provider/aws/auth'
 
-CvClient::Provider::Aws::Auth.new.ask_for_and_save_credentialsoptions = {
+options = {
   :app_name   => "cvc-daemon",
   :dir_mode   => :normal,
   :dir        => '/tmp/',
@@ -20,6 +21,6 @@ CvClient::Provider::Aws::Auth.new.ask_for_and_save_credentialsoptions = {
   :log_output => true
 }
 
-Daemons.run(File.join(lib, 'daemon.rb'), options)
+Daemons.run(File.join(scripts, 'daemon.rb'), options)
 
 
