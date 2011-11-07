@@ -1,6 +1,4 @@
-/.bundle
-/.rvmrc
-/coverage
-/pkg
-/rdoc
-/tags
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
