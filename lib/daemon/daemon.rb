@@ -1,9 +1,11 @@
 Signal.trap('CHLD', 'IGNORE')
 
 
-loop do 
-  agent = init_agent('aws@digitalmines.com', 'dmaws101' )
-	p agent.page.content
+loop do
+	
+	config = {:email => "aws@digitalmines.com", :password => "dmaws1011"}
+  billing = CvClient::Provider::Aws::Billing.new(config[:email], config[:password])
+	p billing.data
   
-  sleep 5
+  sleep 60*60
 end

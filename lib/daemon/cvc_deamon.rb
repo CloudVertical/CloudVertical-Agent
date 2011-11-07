@@ -5,8 +5,8 @@ require 'daemons'
 
 options = {
   :app_name   => "cvc-daemon",
-  :dir_mode   => :script,
-  :dir        => '/var/log',
+  :dir_mode   => :normal,
+  :dir        => '/tmp/',
   :multiple   => false,
   :ontop      => false,
   :mode       => :load,
