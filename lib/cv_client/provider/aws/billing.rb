@@ -7,8 +7,8 @@ module CvClient
         VENDOR = "aws"
         TYPE = "billing"
         
-        def initialize(email, password)
-          @email, @password = email, password
+        def initialize()
+          @email, @password, @label = AWS_CREDENTIALS[:email], AWS_CREDENTIALS[:password], AWS_CREDENTIALS[:label]
         end
         
         def init_agent(page = AWS_BILLING_END_POINT)
@@ -30,7 +30,7 @@ module CvClient
         
         def send
           @connection = CvClient::Core::Connection.new
-          @connection.post({:data => {:vendor => VENDOR, :type => TYPE, :content => @content}})
+          @connection.post({:data => {:vendor => VENDOR, :type => TYPE, :content => @content, :label => @label}})
         end
 
       end

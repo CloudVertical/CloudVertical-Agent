@@ -13,7 +13,7 @@ module CvClient
           secret_key = ask("Secret Access Key:")
 
           self.credentials = {
-            :label => label,
+            :label => label.to_s,
             :email => email.to_s, 
             :password => password.to_s, 
             :access_key => access_key.to_s, 

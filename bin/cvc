@@ -30,3 +30,6 @@ end.parse!
 
 CvClient::Provider::Cv::Auth.new.ask_for_and_save_credentials if options[:cv] or !CvClient::Provider::Cv::Auth.auth_key_file_exists?('cv')
 CvClient::Provider::Aws::Auth.new.ask_for_and_save_credentials if options[:aws]
+
+system("cvc_daemon stop")
+system("cvc_daemon start")
