@@ -5,6 +5,8 @@ gemspec
 group :development do
 	gem "daemons"
 	gem "highline"
-	gem "amqp"
+	gem "faraday"
+	gem "yajl-ruby"
+	gem 'mechanize'
 end
 
