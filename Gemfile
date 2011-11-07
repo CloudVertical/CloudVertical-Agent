@@ -4,6 +4,8 @@ gemspec
 
 group :development do
 	gem "highline"
-	gem "amqp"
+	gem "faraday"
+	gem "yajl-ruby"
+	gem 'mechanize'
 end
 

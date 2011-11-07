@@ -20,5 +20,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency "launchy",        ">= 0.3.2"
   gem.add_dependency "rubyzip"
   gem.add_dependency "amqp"
+  gem.add_dependency "faraday"
+  gem.add_dependency "yajl-ruby"
+  gem.add_dependency "mechanize"
   gem.require_paths = ["lib"]  
 end
