@@ -15,13 +15,9 @@ Gem::Specification.new do |gem|
   gem.files = %x{ git ls-files }.split("\n").select { |d| d =~ %r{^(README|bin/|data/|ext/|lib/|spec/|test|scripts/)} }
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   
-  gem.add_dependency "term-ansicolor", "~> 1.0.5"
-  gem.add_dependency "rest-client",    "~> 1.6.1"
-  gem.add_dependency "launchy",        ">= 0.3.2"
-  gem.add_dependency "rubyzip"
   gem.add_dependency "amqp"
-  gem.add_dependency "faraday"
-  gem.add_dependency "yajl-ruby"
-  gem.add_dependency "mechanize"
+  gem.add_dependency "faraday", "0.7.5"
+  gem.add_dependency "yajl-ruby", "1.0.0"
+  gem.add_dependency "mechanize", "2.0.1"
   gem.require_paths = ["lib"]  
 end
