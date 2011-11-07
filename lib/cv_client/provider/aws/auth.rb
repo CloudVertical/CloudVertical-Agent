@@ -6,12 +6,14 @@ module CvClient
         def ask_for_credentials
           puts "Enter your Amazon Web Services credentials."
 
-          email = ask("email")
-          password = silent_ask("password")
-          access_key = ask("Access Key ID")
-          secret_key = ask("Secret Access Key")
+          label = ask("Label: ")
+          email = ask("Email:")
+          password = silent_ask("Password:")
+          access_key = ask("Access Key ID:")
+          secret_key = ask("Secret Access Key:")
 
           self.credentials = {
+            :label => label,
             :email => email.to_s, 
             :password => password.to_s, 
             :access_key => access_key.to_s, 
