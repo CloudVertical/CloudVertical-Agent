@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary     = "Gateway library and CLI to interact with CloudVertical API."
   gem.description = "Gateway library and CLI to interact with CloudVertical API."
 
-  gem.files = %x{ git ls-files }.split("\n").select { |d| d =~ %r{^(README|bin/|data/|ext/|lib/|spec/|test/)} }
+  gem.files = %x{ git ls-files }.split("\n").select { |d| d =~ %r{^(README|bin/|data/|ext/|lib/|spec/|test|scripts/)} }
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   
   gem.add_dependency "term-ansicolor", "~> 1.0.5"
