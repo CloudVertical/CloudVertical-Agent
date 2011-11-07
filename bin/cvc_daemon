@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'cv_client'
+require 'highline/import'
+require 'daemons'
+require 'cv_client/provider/aws/auth'
+
+CvClient::Provider::Aws::Auth.new.ask_for_and_save_credentialsoptions = {
+  :app_name   => "cvc-daemon",
+  :dir_mode   => :normal,
+  :dir        => '/tmp/',
+  :multiple   => false,
+  :ontop      => false,
+  :mode       => :load,
+  :backtrace  => true,
+  :monitor    => true,
+  :log_output => true
+}
+
+Daemons.run(File.join(lib, 'daemon.rb'), options)
+
+

@@ -1,8 +1,3 @@
-#!/usr/bin/env ruby
-
-require 'rubygems'
-require 'daemons'
-
 options = {
   :app_name   => "cvc-daemon",
   :dir_mode   => :normal,
