@@ -1,7 +1,10 @@
+require 'pp'
+
 module CvClient
   module Provider
     module Aws
       class Auth
+        attr_accessor :credentials
     
         def echo_off
           system "stty -echo"
@@ -20,27 +23,31 @@ module CvClient
           email = ask("AWS email")
           password = running_on_windows? ? ask_for_password_on_windows : silent_ask("AWS password")
           access_key = ask("AWS Access Key ID")
-          secret_key = ask("AWS Secret Access Key")  
-  
-          # api_key = 'api key' #Heroku::Client.auth(user, password, host)['api_key']
+          secret_key = ask("AWS Secret Access Key")
 
-          self.credentials = [api_key, user, email, password, access_key, secret_key]
-          p self.credentials
+          self.credentials = {
+            :api_key => api_key.to_s, 
+            :user => user.to_s, 
+            :email => email.to_s, 
+            :password => password.to_s, 
+            :access_key => access_key.to_s, 
+            :secret_key => secret_key.to_s
+          }
         end
 
         def ask_for_and_save_credentials
           begin
             @credentials = ask_for_credentials
             write_credentials
-            check
-          rescue ::RestClient::Unauthorized, ::RestClient::ResourceNotFound => e
-            delete_credentials
-            clear
-            display "Authentication failed."
-            exit 1
-          rescue Exception => e
-            delete_credentials
-            raise e
+            # check
+          # rescue ::RestClient::Unauthorized, ::RestClient::ResourceNotFound => e
+          #   delete_credentials
+          #   clear
+          #   display "Authentication failed."
+          #   exit 1
+          # rescue Exception => e
+          #   delete_credentials
+          #   raise e
           end
         end
 
@@ -76,11 +83,31 @@ module CvClient
 
         def write_credentials()
           FileUtils.mkdir_p(File.dirname(credentials_file))
-          f = File.open(credentials_file, 'w')
-          f.puts self.credentials
-          f.close
+          
+          File.open( credentials_file, 'w' ) do |out|
+            YAML.dump( self.credentials, out )
+          end
           set_credentials_permissions
+          print "Config file written at #{credentials_file}\n"
         end
+        
+        def credentials_file
+          "#{home_directory}/.cvc/aws/credentials"
+        end      
+
+        def set_credentials_permissions
+          FileUtils.chmod 0700, File.dirname(credentials_file)
+          FileUtils.chmod 0600, credentials_file
+        end
+
+        def delete_credentials
+          FileUtils.rm_f(credentials_file)
+          clear
+        end
+        
+        def home_directory
+          running_on_windows? ? ENV['USERPROFILE'].gsub("\\","/") : ENV['HOME']
+        end                        
       end
     end
   end
