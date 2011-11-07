@@ -11,7 +11,8 @@ loop do
 	
 	## pull billing data from AWS  
 	billing = CvClient::Provider::Aws::Billing.new(credentials[:email], credentials[:password])
-	p billing.data
+	content = billing.get_content
+	billing.send(content)
   
   sleep 60*60
 end
