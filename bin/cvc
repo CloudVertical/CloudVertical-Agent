@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'cv_client'
+
+args = ARGV.dup
+ARGV.clear
+command = args.shift.strip rescue 'help'
+
+def echo_off
+  system "stty -echo"
+end
+
+def echo_on
+  system "stty echo"
+end
+
+def ask_for_credentials
+  puts "Enter your Heroku credentials."
+
+  print "Email: "
+  user = ask
+
+  print "Password: "
+  password = running_on_windows? ? ask_for_password_on_windows : ask_for_password
+  
+  api_key = 'api key' #Heroku::Client.auth(user, password, host)['api_key']
+
+  [user, api_key]
+end
+
+def ask_for_and_save_credentials
+  begin
+    @credentials = ask_for_credentials
+    write_credentials
+    check
+  rescue ::RestClient::Unauthorized, ::RestClient::ResourceNotFound => e
+    delete_credentials
+    clear
+    display "Authentication failed."
+    exit 1
+  rescue Exception => e
+    delete_credentials
+    raise e
+  end
+end
+
+def ask_for_password_on_windows
+  require "Win32API"
+  char = nil
+  password = ''
+
+  while char = Win32API.new("crtdll", "_getch", [ ], "L").Call do
+    break if char == 10 || char == 13 # received carriage return or newline
+    if char == 127 || char == 8 # backspace and delete
+      password.slice!(-1, 1)
+    else
+      # windows might throw a -1 at us so make sure to handle RangeError
+      (password << char.chr) rescue RangeError
+    end
+  end
+  puts
+  return password
+end
+
+def ask_for_password
+  echo_off
+  password = ask
+  puts
+  echo_on
+  return password
+end
+
+ask_for_credentials
