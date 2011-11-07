@@ -5,6 +5,7 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 require File.join(lib, 'cv_client/provider/aws/billing')
 require 'yaml'
 
+CV_API_KEY = YAML::load(File.open("#{ENV["HOME"]}/.cvc/cv/credentials"))
 credentials = YAML::load(File.open("#{ENV["HOME"]}/.cvc/aws/credentials"))
 
 loop do

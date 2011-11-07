@@ -7,7 +7,7 @@ module CvClient
           puts "Enter your Amazon Web Services credentials."
 
           email = ask("email")
-          password = running_on_windows? ? ask_for_password_on_windows : silent_ask("password")
+          password = silent_ask("password")
           access_key = ask("Access Key ID")
           secret_key = ask("Secret Access Key")
 

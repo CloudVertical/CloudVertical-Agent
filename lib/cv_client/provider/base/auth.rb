@@ -38,13 +38,8 @@ module CvClient
         def silent_ask(msg)
           echo_off
           password = ask(msg)
-          puts
           echo_on
           return password
-        end
-
-        def running_on_windows?
-          false
         end
 
         def write_credentials()
@@ -58,10 +53,11 @@ module CvClient
         end
         
         def credentials_file
-          "#{home_directory}/.cvc/aws/credentials"
+          extracted_subfolder_name = self.class.name.split("::")[-2].downcase
+          "#{self.class.home_directory}/.cvc/#{extracted_subfolder_name}/credentials"
         end      
         
-        def auth_key_file_exists?(type)
+        def self.auth_key_file_exists?(type)
           File.exists?("#{home_directory}/.cvc/#{type}/credentials")
         end
 
@@ -75,9 +71,9 @@ module CvClient
           clear
         end
         
-        def home_directory
-          running_on_windows? ? ENV['USERPROFILE'].gsub("\\","/") : ENV['HOME']
-        end                        
+        def self.home_directory
+          ENV['HOME']
+        end
       end
     end
   end

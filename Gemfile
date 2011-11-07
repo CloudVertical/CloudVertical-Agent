@@ -8,5 +8,6 @@ group :development do
 	gem "faraday"
 	gem "yajl-ruby"
 	gem 'mechanize'
+	gem 'ruby-debug19', :require => 'ruby-debug'
 end
 
