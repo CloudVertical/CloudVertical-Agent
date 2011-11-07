@@ -10,6 +10,6 @@ args = ARGV.dup
 ARGV.clear
 command = args.shift.strip rescue 'help'
 
-require 'cv_client/auth/aws'
+require 'cv_client/provider/aws/auth'
 
-CvClient::Auth::Aws.new.ask_for_and_save_credentials
+CvClient::Provider::Aws::Auth.new.ask_for_and_save_credentials
