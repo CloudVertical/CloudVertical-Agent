@@ -4,6 +4,8 @@ module CvClient
       class Billing
         
         AWS_BILLING_END_POINT = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=activity-summary"
+        VENDOR = "aws"
+        TYPE = "billing"
         
         def initialize(email, password)
           @email, @password = email, password
@@ -20,9 +22,14 @@ module CvClient
           return agent
         end
         
-        def data
+        def get_content
           agent = self.init_agent()
           return agent.page.content
+        end
+        
+        def send(content)
+          @connection = CvClient::Core::Connection.new
+          @connection.post({:data => {:vendor => VENDOR, :type => TYPE, :content => content}})
         end
 
       end
