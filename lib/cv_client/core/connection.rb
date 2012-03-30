@@ -5,7 +5,7 @@ require 'mechanize'
 module CvClient
   module Core
     class Connection
-      API_URL = 'http://api.cv.local/'
+      API_URL = 'http://localhost:3000/'
       
       def initialize(url = API_URL)
         @faraday = Faraday.new(:url => url) do |builder|
