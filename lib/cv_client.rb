@@ -5,6 +5,7 @@ require 'cv_client/provider/aws/auth'
 require 'cv_client/provider/aws/billing'
 require 'cv_client/provider/aws/base'
 require 'cv_client/provider/aws/ec2_instance'
+require 'cv_client/provider/aws/cloud_watch'
 
 
 

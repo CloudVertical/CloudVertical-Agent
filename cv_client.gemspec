@@ -19,5 +19,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "faraday", "0.7.5"
   gem.add_dependency "yajl-ruby", "1.0.0"
   gem.add_dependency "mechanize", "2.0.1"
+  gem.add_dependency "right_aws", "3.0.1"
   gem.require_paths = ["lib"]  
 end
