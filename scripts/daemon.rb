@@ -14,17 +14,17 @@ AWS_CREDENTIALS = YAML::load(File.open("#{ENV["HOME"]}/.cvc/aws/credentials"))
 loop do
 	
 	## pull billing data from AWS  
-  # billing = CvClient::Provider::Aws::Billing.new()
-  # billing.get_content
-  # billing.send
+  billing = CvClient::Provider::Aws::Billing.new()
+  billing.fetch_data
+  billing.send
 	
   # ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
   # ec2_instance.fetch_data
   # ec2_instance.send
 	
-	cw_instance = CvClient::Provider::Aws::CloudWatch.new()
-	cw_instance.fetch_data
-	cw_instance.send
+  # cw_instance = CvClient::Provider::Aws::CloudWatch.new()
+  # cw_instance.fetch_data
+  # cw_instance.send
 
   
   sleep 60*60
