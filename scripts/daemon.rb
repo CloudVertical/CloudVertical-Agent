@@ -10,6 +10,7 @@ require File.join(lib, 'cv_client/provider/aws/ec_instance')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/base')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/rds')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec2')
+require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec')
 
 require 'yaml'
 
@@ -37,11 +38,15 @@ loop do
   
   # cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
   # cw_rds.fetch_data
-  #   cw_rds.send  
+  # cw_rds.send  
 
-  ec_instance = CvClient::Provider::Aws::EcInstance.new()
-  ec_instance.fetch_data
-  ec_instance.send    
+  # ec_instance = CvClient::Provider::Aws::EcInstance.new()
+  # ec_instance.fetch_data
+  # ec_instance.send    
   
+  cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
+  cw_ec.fetch_data
+  cw_ec.send
+    
   sleep 60*60
 end
