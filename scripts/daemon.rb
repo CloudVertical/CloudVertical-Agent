@@ -5,6 +5,11 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 require File.join(lib, 'cv_client/provider/aws/billing')
 require File.join(lib, 'cv_client/provider/aws/base')
 require File.join(lib, 'cv_client/provider/aws/ec2_instance')
+require File.join(lib, 'cv_client/provider/aws/rds_instance')
+require File.join(lib, 'cv_client/provider/aws/ec_instance')
+require File.join(lib, 'cv_client/provider/aws/cloudwatch/base')
+require File.join(lib, 'cv_client/provider/aws/cloudwatch/rds')
+require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec2')
 
 require 'yaml'
 
@@ -26,6 +31,17 @@ loop do
   # cw_instance.fetch_data
   # cw_instance.send
 
+  # rds_instance = CvClient::Provider::Aws::RdsInstance.new()
+  # rds_instance.fetch_data
+  # rds_instance.send
+  
+  # cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
+  # cw_rds.fetch_data
+  #   cw_rds.send  
+
+  ec_instance = CvClient::Provider::Aws::EcInstance.new()
+  ec_instance.fetch_data
+  ec_instance.send    
   
   sleep 60*60
 end
