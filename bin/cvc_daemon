@@ -22,5 +22,3 @@ options = {
 }
 
 Daemons.run(File.join(scripts, 'daemon.rb'), options)
-
-

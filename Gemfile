@@ -10,4 +10,3 @@ group :development do
 	gem 'mechanize', "2.0.1"
 	gem 'right_aws'
 end
-

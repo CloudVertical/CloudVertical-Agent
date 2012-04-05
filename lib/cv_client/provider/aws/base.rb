@@ -21,7 +21,8 @@ module CvClient
                           "cc2.8xlarge"=> {'cpu' => 88,  'ram' => 60.5},
                           "cg1.4xlarge"=> {'cpu' => 33.5,'ram' => 22}
                           }
-        REGIONS = ["eu-west-1", "us-east-1", "ap-northeast-1", "us-west-1", "ap-southeast-1", "us-west-2", "sa-east-1"]
+                          # , "ap-northeast-1", "us-west-2"
+        REGIONS = ["eu-west-1", "us-east-1", "us-west-1", "ap-southeast-1", "sa-east-1"]
         
         def initialize()
           @email, @password = AWS_CREDENTIALS[:email], AWS_CREDENTIALS[:password]
@@ -29,7 +30,6 @@ module CvClient
           @access_key_id, @secret_access_key = AWS_CREDENTIALS[:access_key],  AWS_CREDENTIALS[:secret_key]
           @data = []
         end
-        
         
         def fetch_data
         end
