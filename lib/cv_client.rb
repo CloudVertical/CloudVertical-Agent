@@ -10,5 +10,3 @@ require 'cv_client/provider/aws/rds_instance'
 require 'cv_client/provider/aws/cloudwatch/base'
 require 'cv_client/provider/aws/cloudwatch/ec2'
 require 'cv_client/provider/aws/cloudwatch/rds'
-
-

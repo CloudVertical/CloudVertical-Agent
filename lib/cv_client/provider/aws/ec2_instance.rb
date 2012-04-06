@@ -33,7 +33,7 @@ module CvClient
                   'status' => INSTANCE_STATUSES[instance[:aws_state]],
                   'hypervisor' => instance[:hypervisor],
                   'architecture' => instance[:architecture],
-                  'tags' => parse_tags(instance[:tags].values)}.merge(resources)
+                  'tags' => parse_tags(instance[:tags].values.insert(0, instance[:aws_instance_type]))}.merge(resources)
         end
                 
         def send

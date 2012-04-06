@@ -53,7 +53,9 @@ module CvClient
                                        }
                   end                  
                   merged_metrics.each do |metric|
-                   @data << parse_data(metric, instance[:aws_id], measure)
+#                   tags = [MAP_INSTANCE_TYPES[instance[:cache_node_type]]]
+#                   @data << parse_data(metric, instance[:aws_id], tags, measure)
+                    @data << parse_data(metric, instance[:aws_id], measure)
                   end
                   
                 end

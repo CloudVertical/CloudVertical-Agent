@@ -33,13 +33,11 @@ module CvClient
         
         def parse_data(instance)
           storage = instance[:allocated_storage]
-          p storage
-          p INSTANCE_TYPES[instance[:instance_class]]
           resources = INSTANCE_TYPES[instance[:instance_class]].merge(:storage => storage)
           return {'reference_id' => instance[:aws_id], 
                   'platform' => 'linux',
                   'status' => INSTANCE_STATUSES[instance[:status]],
-                  'tags' => parse_tags([])}.merge(resources)
+                  'tags' => parse_tags([MAP_INSTANCE_TYPES[instance[:instance_class]]])}.merge(resources)
     
         end
                 

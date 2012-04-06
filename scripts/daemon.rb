@@ -24,29 +24,29 @@ loop do
   # billing.get_content
   # billing.send
 	
-  # ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
-  # ec2_instance.fetch_data
-  # ec2_instance.send
-	
-	# cw_instance = CvClient::Provider::Aws::CloudWatch.new()
-	# cw_instance.fetch_data
-	# cw_instance.send
-
-	# rds_instance = CvClient::Provider::Aws::RdsInstance.new()
-	# rds_instance.fetch_data
-  # rds_instance.send
+  ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
+  ec2_instance.fetch_data
+  ec2_instance.send
   
-  # cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
-  # cw_rds.fetch_data
-  # cw_rds.send  
+  cw_ec2 = CvClient::Provider::Aws::CloudWatch::Ec2.new()
+  cw_ec2.fetch_data
+  cw_ec2.send
 
-  # ec_instance = CvClient::Provider::Aws::EcInstance.new()
-  # ec_instance.fetch_data
-  # ec_instance.send    
+  rds_instance = CvClient::Provider::Aws::RdsInstance.new()
+  rds_instance.fetch_data
+  rds_instance.send
+  
+  cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
+  cw_rds.fetch_data
+  cw_rds.send  
+
+  ec_instance = CvClient::Provider::Aws::EcInstance.new()
+  ec_instance.fetch_data
+  ec_instance.send    
   
   cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
   cw_ec.fetch_data
   cw_ec.send
-    
+      
   sleep 60*60
 end

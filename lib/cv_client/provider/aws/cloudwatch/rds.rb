@@ -23,7 +23,9 @@ module CvClient
                                                       :dimentions => {"DBInstanceIdentifier" => instance[:aws_id]},
                                                       })
                   metrics[:datapoints].each do |metric|
-                    @data << parse_data(metric, instance[:aws_id], measure)
+#                    tags = [MAP_INSTANCE_TYPES[instance[:instance_class]]]
+#                    @data << parse_data(metric, instance[:aws_id], tags, measure)
+                    @data << parse_data(metric, instance[:aws_id], measure)                    
                   end
                 end
               end
