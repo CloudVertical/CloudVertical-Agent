@@ -128,7 +128,6 @@ module CvClient
             end
             url = AWS_BILLING_END_POINT
             period = period.attributes['value'].value.to_i
-            puts "XXXXXXXX\n#{period}\nXXXXXXXXXXXX"
             
             date = Time.at(period).utc
             timestamp = date.end_of_month
