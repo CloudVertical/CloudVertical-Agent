@@ -8,6 +8,7 @@ require File.join(lib, 'cv_client/provider/aws/ec2_instance')
 require File.join(lib, 'cv_client/provider/aws/rds_instance')
 require File.join(lib, 'cv_client/provider/aws/ec_instance')
 require File.join(lib, 'cv_client/provider/aws/s3_bucket')
+require File.join(lib, 'cv_client/provider/aws/load_balancer')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/base')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/rds')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec2')
@@ -48,10 +49,18 @@ loop do
   # cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
   # cw_ec.fetch_data
   # cw_ec.send
-
-  s3_bucket = CvClient::Provider::Aws::S3Bucket.new()
-  s3_bucket.fetch_data
-  s3_bucket.send
+  # 
+  # s3_bucket = CvClient::Provider::Aws::S3Bucket.new()
+  # s3_bucket.fetch_data
+  # s3_bucket.send
+  # 
+  # load_balancer = CvClient::Provider::Aws::LoadBalancer.new()
+  # load_balancer.fetch_data
+  # load_balancer.send
+  #
+  # cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
+  # cw_elb.fetch_data
+  # cw_elb.send
       
   sleep 60*60
 end
