@@ -39,9 +39,9 @@ loop do
   # cw_rds.fetch_data
   #   cw_rds.send  
 
-  ec_instance = CvClient::Provider::Aws::EcInstance.new()
-  ec_instance.fetch_data
-  ec_instance.send    
+  # ec_instance = CvClient::Provider::Aws::EcInstance.new()
+  # ec_instance.fetch_data
+  # ec_instance.send    
   
   sleep 60*60
 end

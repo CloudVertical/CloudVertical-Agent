@@ -17,6 +17,7 @@ module CvClient
         
         
         def fetch_data
+
           timestamp = Time.now.utc
           # 1 agent
           agent = init_agent()
@@ -24,6 +25,10 @@ module CvClient
           page = agent.page
           # 3 get account number
           account_ref = get_acccount_number(page)
+          # historical data
+          if new?
+            fetch_and_send_previous_months(agent, page, account_ref)
+          end
           # 4 check if consolidatd
           if consolidated_billling?(page)
             # 5 if consolidated than fetch consolidated data and add it to @data
@@ -32,23 +37,17 @@ module CvClient
             caccounts = consolidated_accounts(page)
             caccounts.each do |caccount|
               data = fetch_data_for_consolidated_account(agent, caccount[:account_number])
-              @data << {:provider => PROVIDER, 
-                        :timestamp => timestamp,
-                        :label => @label,
-                        :account_ref => caccount[:account_number],
-                        :parent_account_ref => parent_account_ref,
-                        :data => data,
-                        :tags => parse_tags([])}
+              @data << common_data.merge({:timestamp => timestamp,
+                                          :account_ref => caccount[:account_number],
+                                          :parent_account_ref => parent_account_ref,
+                                          :data => data})
             end
           else
             # 6 else add data to @data
             @path = "/v01/statements/create_aws.json"
-            @data << {:provider => PROVIDER, 
-                      :timestamp => timestamp,
-                      :label => @label,
-                      :account_ref => account_ref,
-                      :data => Base64.encode64(page.content),
-                      :tags => parse_tags([])}
+            @data << common_data.merge({:timestamp => timestamp,
+                                        :account_ref => account_ref,
+                                        :data => Base64.encode64(page.content)})
           end
           
         end
@@ -56,9 +55,9 @@ module CvClient
         def parse_data
         end
         
-        def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, @path||PATH)
+        def send(data = nil)
+          @connection ||= CvClient::Core::Connection.new
+          @connection.post({:data => data||@data}, @path||PATH)
         end
         
         private
@@ -106,6 +105,40 @@ module CvClient
           return page.content
           # data = JSON.parse page.body
           # return data
+        end
+        
+        def common_data()
+          return {:provider => PROVIDER, 
+                  :label => @label,
+                  :tags => parse_tags([])}
+        end
+        
+        def new?
+          @connection ||= CvClient::Core::Connection.new
+          body = @connection.get('/v01/statements?limit=1&format=json').body
+          JSON.parse(body).size == 0
+        end
+        
+        def fetch_and_send_previous_months(agent, page, account_ref)
+          data = []
+          periods = page.search("select[name='statementTimePeriod']").children
+          periods.each do |period|  
+            if period.attributes['value'].value == ""
+              next
+            end
+            url = AWS_BILLING_END_POINT
+            period = period.attributes['value'].value.to_i
+            puts "XXXXXXXX\n#{period}\nXXXXXXXXXXXX"
+            
+            date = Time.at(period).utc
+            timestamp = date.end_of_month
+            url2 = url + "&statementTimePeriod=#{period}"
+            pg = agent.get(url2)
+            data << common_data.merge({:data => Base64.encode64(pg.content), :timestamp => timestamp, :account_ref => account_ref})
+          end
+          @path = "/v01/statements/create_aws.json"
+          send(data)
+          return true
         end
 
 

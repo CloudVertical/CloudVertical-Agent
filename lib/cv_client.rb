@@ -1,4 +1,5 @@
 require 'cv_client/core/connection'
+require 'cv_client/core/helper'
 require 'cv_client/core/ec_interface'
 require 'cv_client/provider/base/auth'
 require 'cv_client/provider/cv/auth'

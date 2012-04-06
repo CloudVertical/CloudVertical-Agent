@@ -24,6 +24,12 @@ module CvClient
         end
       end
       
+      def get(path = '/')
+        @faraday.get do |req|
+          req.url path, :auth_token => CV_API_KEY
+          req.headers['Content-Type'] = 'application/json'
+        end
+      end
     end
   end
 end
