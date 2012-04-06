@@ -7,6 +7,7 @@ require File.join(lib, 'cv_client/provider/aws/base')
 require File.join(lib, 'cv_client/provider/aws/ec2_instance')
 require File.join(lib, 'cv_client/provider/aws/rds_instance')
 require File.join(lib, 'cv_client/provider/aws/ec_instance')
+require File.join(lib, 'cv_client/provider/aws/s3_bucket')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/base')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/rds')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec2')
@@ -24,29 +25,33 @@ loop do
   # billing.get_content
   # billing.send
 	
-  ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
-  ec2_instance.fetch_data
-  ec2_instance.send
-  
-  cw_ec2 = CvClient::Provider::Aws::CloudWatch::Ec2.new()
-  cw_ec2.fetch_data
-  cw_ec2.send
+  # ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
+  # ec2_instance.fetch_data
+  # ec2_instance.send
+  # 
+  # cw_ec2 = CvClient::Provider::Aws::CloudWatch::Ec2.new()
+  # cw_ec2.fetch_data
+  # cw_ec2.send
+  # 
+  # rds_instance = CvClient::Provider::Aws::RdsInstance.new()
+  # rds_instance.fetch_data
+  # rds_instance.send
+  # 
+  # cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
+  # cw_rds.fetch_data
+  # cw_rds.send  
+  # 
+  # ec_instance = CvClient::Provider::Aws::EcInstance.new()
+  # ec_instance.fetch_data
+  # ec_instance.send    
+  # 
+  # cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
+  # cw_ec.fetch_data
+  # cw_ec.send
 
-  rds_instance = CvClient::Provider::Aws::RdsInstance.new()
-  rds_instance.fetch_data
-  rds_instance.send
-  
-  cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
-  cw_rds.fetch_data
-  cw_rds.send  
-
-  ec_instance = CvClient::Provider::Aws::EcInstance.new()
-  ec_instance.fetch_data
-  ec_instance.send    
-  
-  cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
-  cw_ec.fetch_data
-  cw_ec.send
+  s3_bucket = CvClient::Provider::Aws::S3Bucket.new()
+  s3_bucket.fetch_data
+  s3_bucket.send
       
   sleep 60*60
 end
