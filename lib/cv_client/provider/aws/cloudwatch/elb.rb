@@ -15,7 +15,7 @@ module CvClient
               balancers.each do |balancer|
                 MEASURE_NAME.each do |measure|
                   metrics = cw.get_metric_statistics({:namespace => "AWS/ELB", 
-                                                      :statistics => ["Average", "Sum", "Maximum", "Minimum"], 
+                                                      :statistics => ["Average", "Sum", "Maximum", "Minimum", "Count"], 
                                                       :measure_name => measure, 
                                                       :period => PERIOD, 
                                                       :start_time => (now - 3600).iso8601, 
