@@ -13,6 +13,7 @@ require File.join(lib, 'cv_client/provider/aws/cloudwatch/base')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/rds')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec2')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec')
+require File.join(lib, 'cv_client/provider/aws/cloudwatch/elb')
 
 require 'yaml'
 
@@ -57,7 +58,7 @@ loop do
   # load_balancer = CvClient::Provider::Aws::LoadBalancer.new()
   # load_balancer.fetch_data
   # load_balancer.send
-  #
+  # 
   # cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
   # cw_elb.fetch_data
   # cw_elb.send
