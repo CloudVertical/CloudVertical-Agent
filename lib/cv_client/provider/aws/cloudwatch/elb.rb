@@ -14,13 +14,13 @@ module CvClient
               cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :region => region)
               balancers.each do |balancer|
                 MEASURE_NAME.each do |measure|
-                  metrics = cw.get_metric_statistics({:namespace => "AWS/ELB", 
-                                                      :statistics => ["Average", "Sum", "Maximum", "Minimum", "Count"], 
-                                                      :measure_name => measure, 
-                                                      :period => PERIOD, 
+                  metrics = cw.get_metric_statistics({:namespace => 'AWS/ELB',
+                                                      :statistics => ['Average', 'Maximum', 'Minimum', 'Sum'],
+                                                      :measure_name => measure,
+                                                      :period => PERIOD,
                                                       :start_time => (now - 3600).iso8601, 
                                                       :end_time => (now.iso8601),
-                                                      :dimentions => {"LoadBalancerName" => balancer[:load_balancer_name]},
+                                                      :dimentions => {'LoadBalancerName' => balancer[:load_balancer_name]},
                                                       })
                   metrics[:datapoints].each do |metric|
           #                    tags = [MAP_INSTANCE_TYPES[instance[:instance_class]]]

@@ -58,10 +58,10 @@ loop do
   # load_balancer = CvClient::Provider::Aws::LoadBalancer.new()
   # load_balancer.fetch_data
   # load_balancer.send
-  # 
-  # cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
-  # cw_elb.fetch_data
-  # cw_elb.send
+  
+   cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
+   cw_elb.fetch_data
+   cw_elb.send
       
   sleep 60*60
 end
