@@ -9,11 +9,14 @@ require File.join(lib, 'cv_client/provider/aws/rds_instance')
 require File.join(lib, 'cv_client/provider/aws/ec_instance')
 require File.join(lib, 'cv_client/provider/aws/s3_bucket')
 require File.join(lib, 'cv_client/provider/aws/load_balancer')
+require File.join(lib, 'cv_client/provider/aws/block_device')
+require File.join(lib, 'cv_client/provider/aws/snapshot')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/base')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/rds')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec2')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/ec')
 require File.join(lib, 'cv_client/provider/aws/cloudwatch/elb')
+require File.join(lib, 'cv_client/provider/aws/cloudwatch/ebs')
 
 require 'yaml'
 
@@ -26,7 +29,7 @@ loop do
   # billing = CvClient::Provider::Aws::Billing.new()
   # billing.get_content
   # billing.send
-	
+  #   
   # ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
   # ec2_instance.fetch_data
   # ec2_instance.send
@@ -58,10 +61,22 @@ loop do
   # load_balancer = CvClient::Provider::Aws::LoadBalancer.new()
   # load_balancer.fetch_data
   # load_balancer.send
-  
-   cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
-   cw_elb.fetch_data
-   cw_elb.send
+  # 
+  # cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
+  # cw_elb.fetch_data
+  # cw_elb.send
+  # 
+  # block_device = CvClient::Provider::Aws::BlockDevice.new()
+  # block_device.fetch_data
+  # block_device.send
+  #      
+  # snapshot = CvClient::Provider::Aws::Snapshot.new()
+  # snapshot.fetch_data
+  # snapshot.send
+  #      
+  cw_ebs = CvClient::Provider::Aws::CloudWatch::Ebs.new()
+  cw_ebs.fetch_data
+  cw_ebs.send
       
   sleep 60*60
 end

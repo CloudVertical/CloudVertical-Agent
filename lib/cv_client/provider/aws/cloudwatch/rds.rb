@@ -9,9 +9,9 @@ module CvClient
           def fetch_data
             now = Time.now.utc
             REGIONS.each do |region|
-              rds = RightAws::RdsInterface.new(@access_key_id, @secret_access_key, :region => region)
+              rds = RightAws::RdsInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://rds.#{region}.amazonaws.com:443")
               instances = rds.describe_db_instances
-              cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :region => region)
+              cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://monitoring.#{region}.amazonaws.com:443")
               instances.each do |instance|
                 MEASURE_NAME.each do |measure|
                   metrics = cw.get_metric_statistics({:namespace => "AWS/RDS", 

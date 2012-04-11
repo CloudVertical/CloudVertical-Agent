@@ -35,7 +35,7 @@ module CvClient
                   'architecture' => instance[:architecture],
                   'tags' => parse_tags(instance[:tags].values.insert(0, instance[:aws_instance_type]))}.merge(resources)
         end
-                
+
         def send
           @connection = CvClient::Core::Connection.new
           @connection.post({:data => @data}, PATH)

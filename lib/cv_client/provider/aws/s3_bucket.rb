@@ -14,6 +14,7 @@ module CvClient
           data = {:provider => PROVIDER, :storage_type => RESOURCE_TYPE}
           s3 = RightAws::S3Interface.new(@access_key_id, @secret_access_key)
           buckets = s3.list_all_my_buckets
+          p buckets
           buckets.each do |bucket|
             location = s3.bucket_location(bucket[:name])
             location = 'US Standard' if location.empty?
@@ -34,11 +35,12 @@ module CvClient
         def calculate_size(s3, bucket)
           items = nil
           s3.incrementally_list_bucket(bucket[:name]) do |result|
+            p 'item'
             items = result[:contents]
           end
           items.inject(0){|sum, item| sum + item[:size]}
         end
-                
+
         def send
           @connection = CvClient::Core::Connection.new
           @connection.post({:data => @data}, PATH)

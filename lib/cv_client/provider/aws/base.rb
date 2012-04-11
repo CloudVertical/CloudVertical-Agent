@@ -30,8 +30,8 @@ module CvClient
                           "cg1.4xlarge"=> {'cpu' => 33.5,'ram' => 22}
                           }                          
                           
-                          # , "ap-northeast-1", "us-west-2"
-        REGIONS = ["eu-west-1", "us-east-1", "us-west-1", "ap-southeast-1", "sa-east-1"]
+        REGIONS = ["eu-west-1", "us-east-1", "ap-northeast-1", "us-west-2", "us-west-1", "ap-southeast-1", "sa-east-1"]
+        
         
         def initialize()
           @email, @password = AWS_CREDENTIALS[:email], AWS_CREDENTIALS[:password]
