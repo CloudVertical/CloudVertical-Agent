@@ -12,8 +12,10 @@ module CvClient
             super
           end
       
+          # def parse_data(metric, instance_id, tags, measure_name)
+          # return metric.merge({:tags => parse_tags(tags), 
           def parse_data(metric, instance_id, measure_name)
-            return metric.merge({:tags => [], 
+            return metric.merge({:tags => [],             
                                :usage_type => measure_name, 
                                :source => SOURCE, 
                                :period => PERIOD, 

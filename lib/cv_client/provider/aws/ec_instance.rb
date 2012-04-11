@@ -40,7 +40,7 @@ module CvClient
           return {'reference_id' => instance[:aws_id], 
                   'platform' => 'linux',
                   'status' => INSTANCE_STATUSES[instance[:cache_cluster_status]],
-                  'tags' => parse_tags([])}.merge(resources)
+                  'tags' => parse_tags([MAP_INSTANCE_TYPES[instance[:cache_node_type]]])}.merge(resources)
     
         end
                 

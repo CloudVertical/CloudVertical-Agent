@@ -7,6 +7,14 @@ module CvClient
         AWS_BILLING_END_POINT = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=activity-summary"
         PATH = "/"
         PROVIDER = "Amazon"
+        MAP_INSTANCE_TYPES = {'db.m1.small' => 'm1.small', 'cache.m1.small' => 'm1.small',
+                     'db.m1.large' => 'm1.large', 'cache.m1.large' => 'm1.large',   
+                     'db.m1.xlarge' => 'm1.xlarge', 'cache.m1.xlarge' => 'm1.xlarge',  
+                     'db.m2.xlarge' => 'm2.xlarge', 'cache.m2.xlarge' => 'm2.xlarge',  
+                     'db.m2.2xlarge' => 'm2.2xlarge', 'cache.m2.2xlarge' => 'm2.2xlarge', 
+                     'db.m2.4xlarge' => 'm2.4xlarge', 'cache.m2.4xlarge' => 'm2.4xlarge', 
+                     'cache.c1.xlarge' => 'c1.xlarge'
+                    }      
         INSTANCE_TYPES = {"m1.small"   => {'cpu' => 1,   'ram' => 1.7},
                           'm1.medium'  => {'cpu' => 2,   'ram' => 3.75},
                           'm1.large'   => {'cpu' => 4,   'ram' => 7.5},
@@ -20,9 +28,10 @@ module CvClient
                           "cc1.4xlarge"=> {'cpu' => 33.5,'ram' => 23},
                           "cc2.8xlarge"=> {'cpu' => 88,  'ram' => 60.5},
                           "cg1.4xlarge"=> {'cpu' => 33.5,'ram' => 22}
-                          }
-                          # , "ap-northeast-1", "us-west-2"
-        REGIONS = ["eu-west-1", "us-east-1", "us-west-1", "ap-southeast-1", "sa-east-1"]
+                          }                          
+                          
+        REGIONS = ["eu-west-1", "us-east-1", "ap-northeast-1", "us-west-2", "us-west-1", "ap-southeast-1", "sa-east-1"]
+        
         
         def initialize()
           @email, @password = AWS_CREDENTIALS[:email], AWS_CREDENTIALS[:password]

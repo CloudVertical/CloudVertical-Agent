@@ -13,7 +13,6 @@ module CvClient
               instances = ec2.describe_instances
               cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :region => region)
               instances.each do |instance|
-                p instance
                 metrics = cw.get_metric_statistics({:namespace => "AWS/EC2", 
                                                     :statistics => ["Average", "Sum", "Maximum", "Minimum"], 
                                                     :measure_name => MEASURE_NAME, 
@@ -23,7 +22,9 @@ module CvClient
                                                     :dimentions => {"InstanceId" => instance[:awsInstanceId]},
                                                     })
                 metrics[:datapoints].each do |metric|
-                  @data << parse_data(metric, instance[:aws_instance_id], MEASURE_NAME)
+#                  tags = instance[:tags].values.insert(0, instance[:aws_instance_type])
+#                  @data << parse_data(metric, instance[:aws_instance_id], tags, MEASURE_NAME)
+                  @data << parse_data(metric, instance[:aws_instance_id], MEASURE_NAME)                  
                 end
               end
             end
