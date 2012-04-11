@@ -45,6 +45,11 @@ module CvClient
           @connection = CvClient::Core::Connection.new
           @connection.post({:data => @data}, PATH)
         end
+        
+        def connection
+          @connection ||= CvClient::Core::Connection.new
+          return @connection
+        end
 
       end
     end
