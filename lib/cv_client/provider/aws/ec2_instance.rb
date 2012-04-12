@@ -12,7 +12,7 @@ module CvClient
         end
                 
         def fetch_data
-          data = {:provider => PROVIDER, :compute_type => RESOURCE_TYPE}
+          data = {:provider => PROVIDER}
           REGIONS.each do |region|
             data.merge!(:location => region)
             ec2 = RightAws::Ec2.new(@access_key_id, @secret_access_key, :region => region)
@@ -21,14 +21,19 @@ module CvClient
               @data << parse_data(instance).merge(data)
             end
           end
-          p @data
         end
         
         def parse_data(instance)
           p instance
           platform = instance.has_key?(:platform) ? 'windows' : 'linux'
           resources = INSTANCE_TYPES[instance[:aws_instance_type]]
-          return {'reference_id' => instance[:aws_instance_id], 
+          resource_type = RESOURCE_TYPE
+          if instance[:instance_lifecycle]
+            instance[:tags][:instance_lifecycle] = "spot"
+            resource_type = "spot_instance"
+          end
+          return {'compute_type' => resource_type,
+                  'reference_id' => instance[:aws_instance_id], 
                   'platform' => platform,
                   'status' => INSTANCE_STATUSES[instance[:aws_state]],
                   'hypervisor' => instance[:hypervisor],
@@ -37,8 +42,7 @@ module CvClient
         end
 
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH)
         end
 
       end
