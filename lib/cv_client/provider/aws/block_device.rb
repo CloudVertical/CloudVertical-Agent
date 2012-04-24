@@ -25,7 +25,7 @@ module CvClient
         
         def parse_data(volume)
           return {'reference_id' => volume[:aws_id], 
-                  'capacity' => volume[:aws_size],
+                  'capacity' => volume[:aws_size].to_i * 1024,
                   'status' => INSTANCE_STATUSES[volume[:aws_status]],
                   'tags' => parse_tags(volume[:tags].values)}
         end

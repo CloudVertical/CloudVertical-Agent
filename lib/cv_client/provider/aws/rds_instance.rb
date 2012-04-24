@@ -37,6 +37,7 @@ module CvClient
           return {'reference_id' => instance[:aws_id], 
                   'platform' => 'linux',
                   'status' => INSTANCE_STATUSES[instance[:status]],
+                  'launch_time' => instance[:create_time],
                   'tags' => parse_tags([MAP_INSTANCE_TYPES[instance[:instance_class]]])}.merge(resources)
     
         end

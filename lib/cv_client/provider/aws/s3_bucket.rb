@@ -38,7 +38,8 @@ module CvClient
             p 'item'
             items = result[:contents]
           end
-          items.inject(0){|sum, item| sum + item[:size]}
+          capacity = items.inject(0){|sum, item| sum + item[:size]}
+          capacity/1024/1024
         end
 
         def send
