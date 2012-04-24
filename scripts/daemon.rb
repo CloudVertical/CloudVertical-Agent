@@ -29,7 +29,7 @@ loop do
   billing = CvClient::Provider::Aws::Billing.new()
   billing.fetch_data
   billing.send
-	
+    
   ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
   ec2_instance.fetch_data
   ec2_instance.send
@@ -42,7 +42,6 @@ loop do
   cw_ec2.fetch_data
   cw_ec2.send
   
-
   rds_instance = CvClient::Provider::Aws::RdsInstance.new()
   rds_instance.fetch_data
   rds_instance.send
@@ -50,7 +49,7 @@ loop do
   cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
   cw_rds.fetch_data
   cw_rds.send  
-  # 
+   
   ec_instance = CvClient::Provider::Aws::EcInstance.new()
   ec_instance.fetch_data
   ec_instance.send
@@ -59,8 +58,6 @@ loop do
   reserved_instance.fetch_data
   reserved_instance.send
   
-  # ec_instance.send    
-  # 
   cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
   cw_ec.fetch_data
   cw_ec.send

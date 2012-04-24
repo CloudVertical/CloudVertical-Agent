@@ -35,7 +35,6 @@ module CvClient
         def calculate_size(s3, bucket)
           items = nil
           s3.incrementally_list_bucket(bucket[:name]) do |result|
-            p 'item'
             items = result[:contents]
           end
           capacity = items.inject(0){|sum, item| sum + item[:size]}

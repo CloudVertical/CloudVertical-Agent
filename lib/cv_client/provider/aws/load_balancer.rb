@@ -14,7 +14,7 @@ module CvClient
           data = {:provider => PROVIDER, :network_type => RESOURCE_TYPE}
           REGIONS.each do |region|
             data.merge!(:location => region)
-            elb = RightAws::ElbInterface.new(@access_key_id, @secret_access_key, :region => region)
+            elb = RightAws::ElbInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://elasticloadbalancing.#{region}.amazonaws.com:443")
             balancers = elb.describe_load_balancers
             balancers.each do |balancer|
               @data << parse_data(balancer).merge(data)

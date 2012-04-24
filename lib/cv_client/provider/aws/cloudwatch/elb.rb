@@ -9,9 +9,9 @@ module CvClient
           def fetch_data
             now = Time.now.utc
             REGIONS.each do |region|
-              elb = RightAws::ElbInterface.new(@access_key_id, @secret_access_key, :region => region)
+              elb = RightAws::ElbInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://elasticloadbalancing.#{region}.amazonaws.com:443")
               balancers = elb.describe_load_balancers
-              cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :region => region)
+              cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://monitoring.#{region}.amazonaws.com:443")
               balancers.each do |balancer|
                 MEASURE_NAME.each do |measure|
                   metrics = cw.get_metric_statistics({:namespace => 'AWS/ELB',
