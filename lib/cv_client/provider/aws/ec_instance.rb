@@ -37,7 +37,8 @@ module CvClient
           cpu_sum = INSTANCE_TYPES[instance[:cache_node_type]]['cpu'] * num_cache_nodes
           ram_sum = INSTANCE_TYPES[instance[:cache_node_type]]['ram'] * num_cache_nodes
           resources = {'cpu' => cpu_sum, 'ram' => ram_sum}
-          return {'reference_id' => instance[:aws_id], 
+          return {'credential_label' => @label,
+                  'reference_id' => instance[:aws_id], 
                   'platform' => 'linux',
                   'status' => INSTANCE_STATUSES[instance[:cache_cluster_status]],
                   'launch_time' => instance[:cache_cluster_create_time],

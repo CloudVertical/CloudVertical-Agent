@@ -24,7 +24,8 @@ module CvClient
         end
         
         def parse_data(snapshot)
-          return {'reference_id' => snapshot[:aws_id], 
+          return {'credential_label' => @label,
+                  'reference_id' => snapshot[:aws_id], 
                   'status' => INSTANCE_STATUSES[snapshot[:aws_status]],
                   'tags' => parse_tags(snapshot[:tags].values)}
         end

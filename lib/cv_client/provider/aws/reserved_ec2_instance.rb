@@ -80,6 +80,7 @@ module CvClient
                   :status => reserved_instance[:aws_state],
                   :cost => reserved_instance[:aws_fixed_price],
                   :currency => 'USD',
+                  :credential_label => @label,
                   :interval => reserved_instance[:aws_duration],
                   :tags => parse_tags(reserved_instance[:tags].values)}
         end

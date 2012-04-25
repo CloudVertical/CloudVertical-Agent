@@ -26,7 +26,8 @@ module CvClient
         end
         
         def parse_data(bucket)
-          return {'reference_id' => bucket[:name],
+          return {'credential_label' => @label,
+                  'reference_id' => bucket[:name],
                   'status' => 'active',
                   'tags' => parse_tags([])}
     

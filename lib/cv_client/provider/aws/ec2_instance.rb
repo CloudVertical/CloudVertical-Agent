@@ -32,7 +32,8 @@ module CvClient
             instance[:tags][:instance_lifecycle] = "spot"
             resource_type = "spot_instance"
           end
-          return {'compute_type' => resource_type,
+          return {'credential_label' => @label,
+                  'compute_type' => resource_type,
                   'reference_id' => instance[:aws_instance_id], 
                   'platform' => platform,
                   'status' => INSTANCE_STATUSES[instance[:aws_state]],

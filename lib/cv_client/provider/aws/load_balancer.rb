@@ -24,7 +24,8 @@ module CvClient
         end
         
         def parse_data(balancer)
-          return {'reference_id' => balancer[:load_balancer_name],
+          return {'credential_label' => @label,
+                  'reference_id' => balancer[:load_balancer_name],
                   'status' => 'active',
                   'tags' => parse_tags([])}
     
