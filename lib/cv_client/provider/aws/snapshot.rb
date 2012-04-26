@@ -4,7 +4,7 @@ module CvClient
       class Snapshot < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'snapshot'
-        INSTANCE_STATUSES = {'pending' => 'pending', 'completed' => 'completed', 'error' => 'error'}
+        STATUSES = {'available' => 'available'}
         PATH = "/v01/generics.json"
         
         def initialize()
@@ -21,18 +21,19 @@ module CvClient
               @data << parse_data(snapshot).merge(data)
             end
           end
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"
         end
         
         def parse_data(snapshot)
           return {'credential_label' => @label,
                   'reference_id' => snapshot[:aws_id], 
-                  'status' => INSTANCE_STATUSES[snapshot[:aws_status]],
+                  'status' => STATUSES[snapshot[:aws_status]],
                   'tags' => parse_tags(snapshot[:tags].values)}
         end
 
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

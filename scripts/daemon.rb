@@ -25,66 +25,37 @@ AWS_CREDENTIALS = YAML::load(File.open("#{ENV["HOME"]}/.cvc/aws/credentials"))
 
 loop do
 	
-  # pull billing data from AWS  
-  billing = CvClient::Provider::Aws::Billing.new()
-  billing.fetch_data
-  billing.send
-    
-  ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
-  ec2_instance.fetch_data
-  ec2_instance.send
-    
-  ec2_instance = CvClient::Provider::Aws::EC2Instance.new()
-  ec2_instance.fetch_data
-  ec2_instance.send
-  
-  # cw_ec2 = CvClient::Provider::Aws::CloudWatch::Ec2.new()
-  # cw_ec2.fetch_data
-  # cw_ec2.send
-  
-  rds_instance = CvClient::Provider::Aws::RdsInstance.new()
-  rds_instance.fetch_data
-  rds_instance.send
-  
-  # cw_rds = CvClient::Provider::Aws::CloudWatch::Rds.new()
-  # cw_rds.fetch_data
-  # cw_rds.send  
-   
-  ec_instance = CvClient::Provider::Aws::EcInstance.new()
-  ec_instance.fetch_data
-  ec_instance.send
-  
-  reserved_instance = CvClient::Provider::Aws::ReservedEC2Instance.new()
-  reserved_instance.fetch_data
-  reserved_instance.send
-  
-  # cw_ec = CvClient::Provider::Aws::CloudWatch::Ec.new()
-  # cw_ec.fetch_data
-  # cw_ec.send
-  
-  s3_bucket = CvClient::Provider::Aws::S3Bucket.new()
-  s3_bucket.fetch_data
-  s3_bucket.send
-  
-  load_balancer = CvClient::Provider::Aws::LoadBalancer.new()
-  load_balancer.fetch_data
-  load_balancer.send
-  
-  # cw_elb = CvClient::Provider::Aws::CloudWatch::Elb.new()
-  # cw_elb.fetch_data
-  # cw_elb.send
-  
-  block_device = CvClient::Provider::Aws::BlockDevice.new()
-  block_device.fetch_data
-  block_device.send
-       
-  snapshot = CvClient::Provider::Aws::Snapshot.new()
-  snapshot.fetch_data
-  snapshot.send
-       
-  # cw_ebs = CvClient::Provider::Aws::CloudWatch::Ebs.new()
-  # cw_ebs.fetch_data
-  # cw_ebs.send
+	cloudwatch_components = [
+    CvClient::Provider::Aws::CloudWatch::Ec2,
+    CvClient::Provider::Aws::CloudWatch::Rds,
+    CvClient::Provider::Aws::CloudWatch::Ec,
+    CvClient::Provider::Aws::CloudWatch::Elb,
+    CvClient::Provider::Aws::CloudWatch::Ebs
+	  ]
+	  
+	components = [
+    CvClient::Provider::Aws::Billing,
+    CvClient::Provider::Aws::EC2Instance,
+    CvClient::Provider::Aws::RdsInstance,
+    CvClient::Provider::Aws::EcInstance,
+	  CvClient::Provider::Aws::ReservedEC2Instance,
+    CvClient::Provider::Aws::S3Bucket,
+    CvClient::Provider::Aws::LoadBalancer,
+    CvClient::Provider::Aws::BlockDevice,
+    CvClient::Provider::Aws::Snapshot
+	  ]
+
+  cloudwatch_components.each do |cw|
+    obj = cw.new()
+    obj.fetch_data
+    obj.send
+  end
+
+  components.each do |c|
+    obj = c.new()
+    obj.fetch_data
+    obj.send
+  end
 
   sleep 60*60
 end

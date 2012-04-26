@@ -26,6 +26,8 @@ module CvClient
             req.body = {:data => chunk}
           end
         end
+      rescue Faraday::Error::ConnectionFailed => e
+        p "CV_CLIENT ERROR: #{e}" 
       end
       
       def split_data(data)

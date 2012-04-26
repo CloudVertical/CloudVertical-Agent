@@ -4,7 +4,8 @@ module CvClient
       class RdsInstance < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'rds_instance'
-        INSTANCE_STATUSES = {'running' => 'running', 'stopped' => 'stopped', 'available' => 'available'}
+        # API not included info about statuses
+        STATUSES = {'creating' => 'running', 'rebooting' => 'running', 'available' => 'running'}
         PATH = "/v01/computes.json"
         INSTANCE_TYPES = {"db.m1.small"   => {'cpu' => 1,   'ram' => 1.7},
                           'db.m1.large'   => {'cpu' => 4,   'ram' => 7.5},
@@ -28,25 +29,24 @@ module CvClient
               @data << parse_data(instance).merge(data)
             end
           end
-          p @data
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(instance)
-          p instance
           storage = instance[:allocated_storage]
           resources = INSTANCE_TYPES[instance[:instance_class]].merge(:storage => storage)
           return {'credential_label' => @label,
                   'reference_id' => instance[:aws_id], 
                   'platform' => (instance[:engine] + '_' + instance[:license_model].gsub('-', '_')),
-                  'status' => INSTANCE_STATUSES[instance[:status]],
+                  'status' => STATUSES[instance[:status]],
                   'launch_time' => instance[:create_time],
                   'tags' => parse_tags([MAP_INSTANCE_TYPES[instance[:instance_class]]])}.merge(resources)
     
         end
 
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

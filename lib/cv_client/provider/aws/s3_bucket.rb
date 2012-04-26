@@ -22,13 +22,14 @@ module CvClient
             data.merge!(:location => location, :capacity => capacity)
             @data << parse_data(bucket).merge(data)
           end
-          p @data
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(bucket)
           return {'credential_label' => @label,
                   'reference_id' => bucket[:name],
-                  'status' => 'active',
+                  'status' => 'running',
                   'tags' => parse_tags([])}
     
         end
@@ -43,8 +44,7 @@ module CvClient
         end
 
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

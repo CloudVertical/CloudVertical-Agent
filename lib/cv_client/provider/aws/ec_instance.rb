@@ -4,7 +4,7 @@ module CvClient
       class EcInstance < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'ec_instance'
-        INSTANCE_STATUSES = {'running' => 'running', 'stopped' => 'stopped', 'available' => 'available'}
+        STATUSES = {'creating' => 'running', 'deleting' => 'terminated', 'available' => 'running'}
         PATH = "/v01/computes.json"
         INSTANCE_TYPES = {"cache.m1.small"   => {'cpu' => 1,   'ram' => 1.3},
                           'cache.m1.large'   => {'cpu' => 4,   'ram' => 7.1},
@@ -29,7 +29,8 @@ module CvClient
               @data << parse_data(instance).merge(data)
             end
           end
-          p @data
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(instance)
@@ -40,15 +41,14 @@ module CvClient
           return {'credential_label' => @label,
                   'reference_id' => instance[:aws_id], 
                   'platform' => 'linux',
-                  'status' => INSTANCE_STATUSES[instance[:cache_cluster_status]],
+                  'status' => STATUSES[instance[:cache_cluster_status]],
                   'launch_time' => instance[:cache_cluster_create_time],
                   'tags' => parse_tags([MAP_INSTANCE_TYPES[instance[:cache_node_type]]])}.merge(resources)
     
         end
-                
+
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

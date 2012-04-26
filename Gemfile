@@ -8,5 +8,5 @@ group :development do
 	gem "faraday", "0.7.5"
 	gem "yajl-ruby", "1.0.0"
 	gem 'mechanize', "2.0.1"
-	gem 'right_aws'
+	gem 'right_aws', "3.0.3"
 end

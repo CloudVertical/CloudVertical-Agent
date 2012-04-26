@@ -4,6 +4,7 @@ module CvClient
       class ReservedEC2Instance < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'reserved_ec2_instance'
+        STATUSES = { 'pending-payment' => 'pending-payment', 'active' => 'active', 'payment-failed' => 'payment-failed', 'retired' => 'retired' }
         PATH = "/v01/generics.json"
         
         def initialize()
@@ -34,10 +35,11 @@ module CvClient
             _reserved_instances.each do |reserved|
               reserved[:aws_instance_count].times do 
                 instance_resources = INSTANCE_TYPES[reserved[:aws_instance_type]]
-                if _inst = marked_as_reserved.find{|instance| instance[:location] == region && 
+                if _inst = marked_as_reserved.find{|instance| p instance; instance[:location] == region && 
                                                               instance[:cpu] == instance_resources[:cpu] && 
                                                               instance[:ram] == instance_resources[:ram] && 
-                                                              /#{instance[:platform]}/i.match(reserved[:aws_product_description])}
+                                                              /#{instance[:platform]}/i.match(reserved[:aws_product_description])
+                                                              }
                   puts "ALREADY EXISTS"
                   marked_as_reserved.delete(_inst)
                 else
@@ -69,7 +71,8 @@ module CvClient
           end
           
           # 4 unsign tags
-          
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"                    
         end
         
         def parse_data(reserved_instance)
@@ -77,16 +80,16 @@ module CvClient
                   :generic_type => RESOURCE_TYPE,
                   :reference_id => reserved_instance[:aws_id],
                   :location => reserved_instance[:aws_availability_zone],
-                  :status => reserved_instance[:aws_state],
+                  :status => STATUSES[reserved_instance[:aws_state]],
                   :cost => reserved_instance[:aws_fixed_price],
                   :currency => 'USD',
                   :credential_label => @label,
                   :interval => reserved_instance[:aws_duration],
                   :tags => parse_tags(reserved_instance[:tags].values)}
         end
-                
+
         def send
-          connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

@@ -20,20 +20,20 @@ module CvClient
               @data << parse_data(balancer).merge(data)
             end
           end
-          p @data
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(balancer)
           return {'credential_label' => @label,
                   'reference_id' => balancer[:load_balancer_name],
-                  'status' => 'active',
+                  'status' => 'running',
                   'tags' => parse_tags([])}
     
         end
 
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

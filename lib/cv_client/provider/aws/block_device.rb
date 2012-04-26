@@ -4,7 +4,7 @@ module CvClient
       class BlockDevice < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'block_device'
-        INSTANCE_STATUSES = {'creating' => 'creating', 'available' => 'available', 'in-use' => 'in-use', 'deleting' => 'deleting', 'deleted' => 'deleted', 'error' => 'error'}
+        STATUSES = {'creating' => 'available', 'available' => 'available', 'in-use' => 'in-use', 'deleting' => 'deleted', 'deleted' => 'deleted', 'error' => 'error'}
         PATH = "/v01/storage.json"
         
         def initialize()
@@ -21,19 +21,20 @@ module CvClient
               @data << parse_data(volume).merge(data)
             end
           end
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(volume)
           return {'credential_label' => @label,
                   'reference_id' => volume[:aws_id], 
                   'capacity' => volume[:aws_size].to_i * 1024,
-                  'status' => INSTANCE_STATUSES[volume[:aws_status]],
+                  'status' => STATUSES[volume[:aws_status]],
                   'tags' => parse_tags(volume[:tags].values)}
         end
 
         def send
-          @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end

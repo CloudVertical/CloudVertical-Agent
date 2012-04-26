@@ -28,8 +28,7 @@ module CvClient
           end
 
           def send
-            @connection = CvClient::Core::Connection.new
-            @connection.post({:data => @data}, PATH)
+            connection.post({:data => @data}, PATH) unless @data.empty?
           end
           
         end 

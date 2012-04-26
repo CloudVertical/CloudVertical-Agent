@@ -4,7 +4,7 @@ module CvClient
       class EC2Instance < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'instance'
-        INSTANCE_STATUSES = {'running' => 'running', 'stopped' => 'stopped'}
+        STATUSES = {'pending' => 'running', 'running' => 'running', 'shutting-down' => 'stopped', 'terminated' => 'terminated', 'stopping' => 'stopped', 'stopped' => 'stopped'}
         PATH = "/v01/computes.json"
         
         def initialize()
@@ -21,10 +21,11 @@ module CvClient
               @data << parse_data(instance).merge(data)
             end
           end
+        rescue RightAws::AwsError => e
+          p "CV_CLIENT ERROR: #{e}"
         end
         
         def parse_data(instance)
-          p instance
           platform = instance.has_key?(:platform) ? 'windows' : 'linux'
           resources = INSTANCE_TYPES[instance[:aws_instance_type]]
           resource_type = RESOURCE_TYPE
@@ -36,7 +37,7 @@ module CvClient
                   'compute_type' => resource_type,
                   'reference_id' => instance[:aws_instance_id], 
                   'platform' => platform,
-                  'status' => INSTANCE_STATUSES[instance[:aws_state]],
+                  'status' => STATUSES[instance[:aws_state]],
                   'hypervisor' => instance[:hypervisor],
                   'architecture' => instance[:architecture],
                   'launch_time' => instance[:aws_launch_time],
@@ -44,9 +45,7 @@ module CvClient
         end
 
         def send
-          require 'pp'
-          pp @data
-          connection.post({:data => @data}, PATH)
+          connection.post({:data => @data}, PATH) unless @data.empty?
         end
 
       end
