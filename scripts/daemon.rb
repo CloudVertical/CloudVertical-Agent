@@ -25,14 +25,6 @@ AWS_CREDENTIALS = YAML::load(File.open("#{ENV["HOME"]}/.cvc/aws/credentials"))
 
 loop do
 	
-	cloudwatch_components = [
-    CvClient::Provider::Aws::CloudWatch::Ec2,
-    CvClient::Provider::Aws::CloudWatch::Rds,
-    CvClient::Provider::Aws::CloudWatch::Ec,
-    CvClient::Provider::Aws::CloudWatch::Elb,
-    CvClient::Provider::Aws::CloudWatch::Ebs
-	  ]
-	  
 	components = [
     CvClient::Provider::Aws::Billing,
     CvClient::Provider::Aws::EC2Instance,
@@ -44,15 +36,23 @@ loop do
     CvClient::Provider::Aws::BlockDevice,
     CvClient::Provider::Aws::Snapshot
 	  ]
-
-  cloudwatch_components.each do |cw|
-    obj = cw.new()
+	
+	cloudwatch_components = [
+    CvClient::Provider::Aws::CloudWatch::Ec2,
+    CvClient::Provider::Aws::CloudWatch::Rds,
+    CvClient::Provider::Aws::CloudWatch::Ec,
+    CvClient::Provider::Aws::CloudWatch::Elb,
+    CvClient::Provider::Aws::CloudWatch::Ebs
+	  ]
+	  
+  components.each do |c|
+    obj = c.new()
     obj.fetch_data
     obj.send
   end
 
-  components.each do |c|
-    obj = c.new()
+  cloudwatch_components.each do |cw|
+    obj = cw.new()
     obj.fetch_data
     obj.send
   end
