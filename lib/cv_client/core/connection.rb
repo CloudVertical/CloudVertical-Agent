@@ -18,10 +18,11 @@ module CvClient
       end
       
       def post(data, path = '/api/v1/push')
+        return false if data[:data].empty?
         chunks = split_data(data[:data])
         chunks.each do |chunk|
           @faraday.post do |req|
-            req.url path, :auth_token => CV_API_KEY
+            req.url path, :auth_token => data[:auth_token]||CV_API_KEY
             req.headers['Content-Type'] = 'application/json'
             req.body = {:data => chunk}
           end
@@ -45,9 +46,9 @@ module CvClient
         chunks
       end
       
-      def get(path = '/')
+      def get(path = '/', auth_token = nil)
         @faraday.get do |req|
-          req.url path, :auth_token => CV_API_KEY
+          req.url path, :auth_token => auth_token||CV_API_KEY
           req.headers['Content-Type'] = 'application/json'
         end
       end

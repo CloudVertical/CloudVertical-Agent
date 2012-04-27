@@ -9,15 +9,15 @@ module CvClient
           label = ask("Label: ")
           email = ask("Email:")
           password = silent_ask("Password:")
-          access_key = ask("Access Key ID:")
-          secret_key = ask("Secret Access Key:")
+          access_key_id = ask("Access Key ID:")
+          secret_access_key = ask("Secret Access Key:")
 
           self.credentials = {
             :label => label.to_s,
             :email => email.to_s, 
             :password => password.to_s, 
-            :access_key => access_key.to_s, 
-            :secret_key => secret_key.to_s
+            :access_key_id => access_key_id.to_s, 
+            :secret_access_key => secret_access_key.to_s
           }
         end
       end

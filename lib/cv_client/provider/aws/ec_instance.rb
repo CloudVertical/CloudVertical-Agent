@@ -14,11 +14,7 @@ module CvClient
                           "cache.m2.4xlarge" => {'cpu' => 26,  'ram' => 68},
                           "cache.c1.xlarge" => {'cpu' => 26,  'ram' => 6.6},                          
                           }
-        
-        def initialize()
-          super
-        end
-                
+
         def fetch_data
           data = {:provider => PROVIDER, :compute_type => RESOURCE_TYPE}
           REGIONS.each do |region|
@@ -48,7 +44,7 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
         end
 
       end

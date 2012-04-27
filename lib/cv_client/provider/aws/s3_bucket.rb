@@ -5,11 +5,7 @@ module CvClient
         
         RESOURCE_TYPE = 's3_bucket'
         PATH = "/v01/storage.json"
-        
-        def initialize()
-          super
-        end
-                
+           
         def fetch_data
           data = {:provider => PROVIDER, :storage_type => RESOURCE_TYPE}
           s3 = RightAws::S3Interface.new(@access_key_id, @secret_access_key)
@@ -44,7 +40,7 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
         end
 
       end

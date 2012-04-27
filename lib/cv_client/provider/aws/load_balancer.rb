@@ -5,11 +5,7 @@ module CvClient
         
         RESOURCE_TYPE = 'load_balancer'
         PATH = "/v01/networks.json"
-        
-        def initialize()
-          super
-        end
-                
+           
         def fetch_data
           data = {:provider => PROVIDER, :network_type => RESOURCE_TYPE}
           REGIONS.each do |region|
@@ -33,7 +29,7 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
         end
 
       end

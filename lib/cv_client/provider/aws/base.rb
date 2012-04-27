@@ -33,10 +33,11 @@ module CvClient
         REGIONS = ["eu-west-1", "us-east-1", "ap-northeast-1", "us-west-2", "us-west-1", "ap-southeast-1", "sa-east-1"]
         
         
-        def initialize()
-          @email, @password = AWS_CREDENTIALS[:email], AWS_CREDENTIALS[:password]
-          @label = AWS_CREDENTIALS[:label]
-          @access_key_id, @secret_access_key = AWS_CREDENTIALS[:access_key],  AWS_CREDENTIALS[:secret_key]
+        def initialize(credential = AWS_CREDENTIALS.merge(:auth_token => CV_API_KEY))
+          @email, @password = credential[:email], credential[:password]
+          @label = credential[:label]
+          @access_key_id, @secret_access_key = credential[:access_key_id], credential[:secret_access_key]
+          @auth_token = credential[:auth_token]
           @data = []
         end
         
@@ -52,7 +53,7 @@ module CvClient
                 
         def send
           @connection = CvClient::Core::Connection.new
-          @connection.post({:data => @data}, PATH)
+          @connection.post({:data => @data, :auth_token => auth_token}, PATH)
         end
         
         def connection

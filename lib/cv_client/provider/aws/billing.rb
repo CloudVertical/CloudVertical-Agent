@@ -10,12 +10,6 @@ module CvClient
         TYPE = "billing"
         PATH = "/v01/statements.json"
         
-        
-        def initialize()
-          super
-        end
-        
-        
         def fetch_data
 
           timestamp = Time.now.utc
@@ -57,7 +51,7 @@ module CvClient
         
         def send(data = nil)
           @connection ||= CvClient::Core::Connection.new
-          @connection.post({:data => data||@data}, @path||PATH)
+          @connection.post({:data => data||@data, :auth_token => @auth_token}, @path||PATH)
         end
         
         private
@@ -115,7 +109,7 @@ module CvClient
         
         def new?
           @connection ||= CvClient::Core::Connection.new
-          body = @connection.get('/v01/statements?limit=1&format=json').body
+          body = @connection.get('/v01/statements?limit=1&format=json', @auth_token).body
           JSON.parse(body).size == 0
         end
         

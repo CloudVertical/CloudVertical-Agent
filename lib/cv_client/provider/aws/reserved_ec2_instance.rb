@@ -6,14 +6,10 @@ module CvClient
         RESOURCE_TYPE = 'reserved_ec2_instance'
         STATUSES = { 'pending-payment' => 'pending-payment', 'active' => 'active', 'payment-failed' => 'payment-failed', 'retired' => 'retired' }
         PATH = "/v01/generics.json"
-        
-        def initialize()
-          super
-        end
-                
+           
         def fetch_data
           data = {}
-          marked_as_reserved = JSON.parse(connection.get('/v01/computes?with_tags[]=reserved&format=json').body)
+          marked_as_reserved = JSON.parse(connection.get('/v01/computes?with_tags[]=reserved&format=json', @auth_token).body)
           REGIONS.each do |region|
             ec2 = RightAws::Ec2.new(@access_key_id, @secret_access_key, :region => region)
             reserved_instances = ec2.describe_reserved_instances
@@ -55,7 +51,7 @@ module CvClient
                   p _inst = _instances[0]
                   if _inst
                     _instances.delete(_inst)
-                    connection.post({:data => [{:location => region, 
+                    connection.post({:auth_token => @auth_token, :data => [{:location => region, 
                                                 :reference_id => _inst[:aws_instance_id], 
                                                 :provider => PROVIDER, 
                                                 :tags => ['reserved'],
@@ -89,7 +85,8 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
+          
         end
 
       end

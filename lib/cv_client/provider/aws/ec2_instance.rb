@@ -7,10 +7,6 @@ module CvClient
         STATUSES = {'pending' => 'running', 'running' => 'running', 'shutting-down' => 'stopped', 'terminated' => 'terminated', 'stopping' => 'stopped', 'stopped' => 'stopped'}
         PATH = "/v01/computes.json"
         
-        def initialize()
-          super
-        end
-                
         def fetch_data
           data = {:provider => PROVIDER}
           REGIONS.each do |region|
@@ -45,7 +41,7 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
         end
 
       end

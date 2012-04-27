@@ -6,11 +6,7 @@ module CvClient
         RESOURCE_TYPE = 'block_device'
         STATUSES = {'creating' => 'available', 'available' => 'available', 'in-use' => 'in-use', 'deleting' => 'deleted', 'deleted' => 'deleted', 'error' => 'error'}
         PATH = "/v01/storage.json"
-        
-        def initialize()
-          super
-        end
-                
+          
         def fetch_data
           data = {:provider => PROVIDER, :storage_type => RESOURCE_TYPE}
           REGIONS.each do |region|
@@ -34,7 +30,7 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
         end
 
       end

@@ -6,11 +6,7 @@ module CvClient
         RESOURCE_TYPE = 'snapshot'
         STATUSES = {'available' => 'available'}
         PATH = "/v01/generics.json"
-        
-        def initialize()
-          super
-        end
-                
+            
         def fetch_data
           data = {:provider => PROVIDER, :generic_type => RESOURCE_TYPE}
           REGIONS.each do |region|
@@ -33,7 +29,7 @@ module CvClient
         end
 
         def send
-          connection.post({:data => @data}, PATH) unless @data.empty?
+          connection.post({:data => @data, :auth_token => @auth_token}, PATH)
         end
 
       end
