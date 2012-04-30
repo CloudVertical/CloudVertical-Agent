@@ -23,6 +23,7 @@ module CvClient
         
         def parse_data(volume)
           return {'credential_label' => @label,
+                  'label' => volume[:tags] ? volume[:tags]['Name'] : '',            
                   'reference_id' => volume[:aws_id], 
                   'capacity' => volume[:aws_size].to_i * 1024,
                   'status' => STATUSES[volume[:aws_status]],

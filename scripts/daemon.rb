@@ -30,7 +30,7 @@ loop do
     CvClient::Provider::Aws::EC2Instance,
     CvClient::Provider::Aws::RdsInstance,
     CvClient::Provider::Aws::EcInstance,
-	  CvClient::Provider::Aws::ReservedEC2Instance,
+    CvClient::Provider::Aws::ReservedEC2Instance,
     CvClient::Provider::Aws::S3Bucket,
     CvClient::Provider::Aws::LoadBalancer,
     CvClient::Provider::Aws::BlockDevice,
@@ -51,11 +51,11 @@ loop do
     obj.send
   end
 
-  cloudwatch_components.each do |cw|
-    obj = cw.new()
-    obj.fetch_data
-    obj.send
-  end
+  # cloudwatch_components.each do |cw|
+  #   obj = cw.new()
+  #   obj.fetch_data
+  #   obj.send
+  # end
 
   sleep 60*60
 end

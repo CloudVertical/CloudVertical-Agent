@@ -4,7 +4,7 @@ module CvClient
       class Snapshot < CvClient::Provider::Aws::Base
         
         RESOURCE_TYPE = 'snapshot'
-        STATUSES = {'available' => 'available'}
+        STATUSES = {'pending' => 'pending', 'completed' => 'completed', 'error' => 'error'}
         PATH = "/v01/generics.json"
             
         def fetch_data
@@ -23,6 +23,7 @@ module CvClient
         
         def parse_data(snapshot)
           return {'credential_label' => @label,
+                  'label' => snapshot[:tags] ? snapshot[:tags]['Name'] : '',            
                   'reference_id' => snapshot[:aws_id], 
                   'status' => STATUSES[snapshot[:aws_status]],
                   'tags' => parse_tags(snapshot[:tags].values)}

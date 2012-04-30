@@ -30,6 +30,7 @@ module CvClient
             resource_type = "spot_instance"
           end
           return {'credential_label' => @label,
+                  'label' => instance[:tags] ? instance[:tags]['Name'] : '',
                   'compute_type' => resource_type,
                   'reference_id' => instance[:aws_instance_id], 
                   'platform' => platform,
