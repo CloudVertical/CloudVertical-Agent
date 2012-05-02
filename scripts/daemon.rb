@@ -51,11 +51,12 @@ loop do
     obj.send
   end
 
-  # cloudwatch_components.each do |cw|
-  #   obj = cw.new()
-  #   obj.fetch_data
-  #   obj.send
-  # end
+  cloudwatch_components.each do |cw|
+    p cw.to_s
+    obj = cw.new()
+    obj.fetch_data
+    obj.send
+  end
 
   sleep 60*60
 end

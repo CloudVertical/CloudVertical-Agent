@@ -9,15 +9,17 @@ module CvClient
         def fetch_data
           data = {:provider => PROVIDER, :network_type => RESOURCE_TYPE}
           REGIONS.each do |region|
-            data.merge!(:location => region)
-            elb = RightAws::ElbInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://elasticloadbalancing.#{region}.amazonaws.com:443")
-            balancers = elb.describe_load_balancers
-            balancers.each do |balancer|
-              @data << parse_data(balancer).merge(data)
+            begin
+              data.merge!(:location => region)
+              elb = RightAws::ElbInterface.new(@access_key_id, @secret_access_key, :region => region)
+              balancers = elb.describe_load_balancers
+              balancers.each do |balancer|
+                @data << parse_data(balancer).merge(data)
+              end
+            rescue RightAws::AwsError => e
+              p "CV_CLIENT ERROR: #{e}"          
             end
           end
-        rescue RightAws::AwsError => e
-          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(balancer)

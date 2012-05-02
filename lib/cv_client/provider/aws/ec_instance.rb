@@ -18,15 +18,17 @@ module CvClient
         def fetch_data
           data = {:provider => PROVIDER, :compute_type => RESOURCE_TYPE}
           REGIONS.each do |region|
-            data.merge!(:location => region)
-            ec = RightAws::EcInterface.new(@access_key_id, @secret_access_key, :server => "elasticache.#{region}.amazonaws.com")
-            instances = ec.describe_cache_clusters
-            instances.each do |instance|
-              @data << parse_data(instance).merge(data)
-            end
+            begin
+              data.merge!(:location => region)
+              ec = RightAws::EcInterface.new(@access_key_id, @secret_access_key, :server => "elasticache.#{region}.amazonaws.com")
+              instances = ec.describe_cache_clusters
+              instances.each do |instance|
+                @data << parse_data(instance).merge(data)
+              end
+            rescue RightAws::AwsError => e
+              p "CV_CLIENT ERROR: #{e}"          
+            end              
           end
-        rescue RightAws::AwsError => e
-          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(instance)

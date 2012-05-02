@@ -10,15 +10,17 @@ module CvClient
         def fetch_data
           data = {:provider => PROVIDER, :storage_type => RESOURCE_TYPE}
           REGIONS.each do |region|
-            data.merge!(:location => region)
-            ec2 = RightAws::Ec2.new(@access_key_id, @secret_access_key, :region => region)
-            volumes = ec2.describe_volumes
-            volumes.each do |volume|
-              @data << parse_data(volume).merge(data)
-            end
+            begin
+              data.merge!(:location => region)
+              ec2 = RightAws::Ec2.new(@access_key_id, @secret_access_key, :region => region)
+              volumes = ec2.describe_volumes
+              volumes.each do |volume|
+                @data << parse_data(volume).merge(data)
+              end
+            rescue RightAws::AwsError => e
+              p "CV_CLIENT ERROR: #{e}"          
+            end              
           end
-        rescue RightAws::AwsError => e
-          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(volume)

@@ -18,15 +18,17 @@ module CvClient
         def fetch_data
           data = {:provider => PROVIDER, :compute_type => RESOURCE_TYPE}
           REGIONS.each do |region|
-            data.merge!(:location => region)
-            rds = RightAws::RdsInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://rds.#{region}.amazonaws.com:443")
-            instances = rds.describe_db_instances
-            instances.each do |instance|
-              @data << parse_data(instance).merge(data)
+            begin
+              data.merge!(:location => region)
+              rds = RightAws::RdsInterface.new(@access_key_id, @secret_access_key, :region => region)
+              instances = rds.describe_db_instances
+              instances.each do |instance|
+                @data << parse_data(instance).merge(data)
+              end
+            rescue RightAws::AwsError => e
+              p "CV_CLIENT ERROR: #{e}"          
             end
           end
-        rescue RightAws::AwsError => e
-          p "CV_CLIENT ERROR: #{e}"          
         end
         
         def parse_data(instance)

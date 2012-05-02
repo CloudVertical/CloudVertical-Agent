@@ -9,26 +9,28 @@ module CvClient
           def fetch_data
             now = Time.now.utc
             REGIONS.each do |region|
-              rds = RightAws::RdsInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://rds.#{region}.amazonaws.com:443")
-              instances = rds.describe_db_instances
-              cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :endpoint => "http://monitoring.#{region}.amazonaws.com:443")
-              instances.each do |instance|
-                MEASURE_NAME.each do |measure|
-                  metrics = cw.get_metric_statistics({:namespace => "AWS/RDS", 
-                                                      :statistics => ["Average", "Sum", "Maximum", "Minimum"], 
-                                                      :measure_name => measure, 
-                                                      :period => PERIOD, 
-                                                      :start_time => (now - 3600).iso8601, 
-                                                      :end_time => (now.iso8601),
-                                                      :dimentions => {"DBInstanceIdentifier" => instance[:aws_id]},
-                                                      })
-                  metrics[:datapoints].each do |metric|
-#                    tags = [MAP_INSTANCE_TYPES[instance[:instance_class]]]
-#                    @data << parse_data(metric, instance[:aws_id], tags, measure)
-                    @data << parse_data(metric, instance[:aws_id], measure)                    
+              begin
+                rds = RightAws::RdsInterface.new(@access_key_id, @secret_access_key, :region => region)
+                instances = rds.describe_db_instances
+                cw = RightAws::AcwInterface.new(@access_key_id, @secret_access_key, :region => region)
+                instances.each do |instance|
+                  MEASURE_NAME.each do |measure|
+                    metrics = cw.get_metric_statistics({:namespace => "AWS/RDS", 
+                                                        :statistics => ["Average", "Sum", "Maximum", "Minimum"], 
+                                                        :measure_name => measure, 
+                                                        :period => PERIOD, 
+                                                        :start_time => (now - 3600).iso8601, 
+                                                        :end_time => (now.iso8601),
+                                                        :dimentions => {"DBInstanceIdentifier" => instance[:aws_id]},
+                                                        })
+                    metrics[:datapoints].each do |metric|
+                      @data << parse_data(metric, instance[:aws_id], measure)                    
+                    end
                   end
                 end
-              end
+              rescue RightAws::AwsError => e
+                p "CV_CLIENT ERROR: #{e}"            
+              end                
             end
           end
           
