@@ -5,7 +5,6 @@ This library is a gateway that lets You use Cloud Vertical API for fetching data
 Pingdom, Cloudkick, Heroku, VMware, Cloudwatch which later you can access and consume for 
 You specific purposes or display widgets on Cloud Vertical dashboard.
 
-For more about CvClient see <http://cloudvertical.com/cv_client>.
 
 
 Sample Workflow
